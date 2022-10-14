@@ -1,8 +1,8 @@
-const mongoose = require("mongoose");
-const crypto = require("crypto");
-const jwt = require("jsonwebtoken");
-const { emailRegex } = require("../validations/constants");
-const Helpers = require("../../plugins/Helpers");
+const mongoose = require('mongoose')
+const crypto = require('crypto')
+const jwt = require('jsonwebtoken')
+const { emailRegex } = require('../validations/constants')
+const Helpers = require('../../plugins/helpers')
 
 const userSchema = new mongoose.Schema(
   {
@@ -30,64 +30,63 @@ const userSchema = new mongoose.Schema(
     address: {
       type: String,
       require: false,
-      default: "",
+      default: '',
     },
     avatar: {
       type: String,
       required: false,
-      default: "",
+      default: '',
     },
     backgroundImage: {
       type: String,
       required: false,
-      default: "",
+      default: '',
     },
     headline: {
       type: String,
       required: false,
-      default: "",
+      default: '',
     },
-
   },
   {
     timestamps: {
-      createAt: "created_at",
-      updatedAt: "updated_at",
+      createAt: 'created_at',
+      updatedAt: 'updated_at',
     },
   }
-);
+)
 
-userSchema.index({ email: 1, phone: 1 }, { unique: true });
+userSchema.index({ email: 1, phone: 1 }, { unique: true })
 
 userSchema.methods.setPassword = function (password) {
-  this.salt = crypto.randomBytes(16).toString("hex");
-  this.hash = crypto.pbkdf2Sync(password, this.salt, 10000, 512, "sha512");
-};
+  this.salt = crypto.randomBytes(16).toString('hex')
+  this.hash = crypto.pbkdf2Sync(password, this.salt, 10000, 512, 'sha512')
+}
 
 userSchema.methods.validatePassword = function (password) {
   const hash = password
-    .pbkdf2Sync(password, this.salt, 10000, 512, "sha512")
-    .toString("hex");
-  return this.hash === hash;
-};
+    .pbkdf2Sync(password, this.salt, 10000, 512, 'sha512')
+    .toString('hex')
+  return this.hash === hash
+}
 
 userSchema.methods.generateToken = function (member = false) {
-  let expiresIn = "1d";
-  if (member) expiresIn = "365d";
+  let expiresIn = '1d'
+  if (member) expiresIn = '365d'
   const payload = {
     email: this.email,
     phone: this.phone,
     id: this._id,
-  };
+  }
 
-  const secret = process.env.SECRET;
+  const secret = process.env.SECRET
   const options = {
     expiresIn,
-  };
+  }
 
-  const token = jwt.sign(payload, secret, options);
-  return token;
-};
+  const token = jwt.sign(payload, secret, options)
+  return token
+}
 
 userSchema.methods.jsonData = function () {
   return {
@@ -102,14 +101,14 @@ userSchema.methods.jsonData = function () {
     position: this.position,
     education: this.education,
     location: this.location,
-  };
-};
+  }
+}
 userSchema.pre(/'updateOne | findOneAndUpdate'/, function (next) {
   this.set({
     updatedAt: Helpers.getTimeWithoutMilliSeconds(),
-  });
+  })
 
-  next();
-});
-const userModel = mongoose.model("user", userSchema, "user");
-module.exports = userModel;
+  next()
+})
+const userModel = mongoose.model('user', userSchema, 'user')
+module.exports = userModel
