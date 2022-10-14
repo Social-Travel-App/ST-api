@@ -1,54 +1,9 @@
 const mongoose = require("mongoose");
-const Helpers = require("../../plugins/Helpers");
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 const { emailRegex } = require("../validations/constants");
-// const position = new mongoose.Schema({
-//   title: {
-//     type: String,
-//     require: true,
-//   },
-//   employmentType: {
-//     type: String,
-//     require: false,
-//     default: "",
-//   },
-//   companyName: {
-//     type: String,
-//     require: true,
-//   },
-//   location: {
-//     type: String,
-//     require: false,
-//     default: "",
-//   },
-//   startAt: {
-//     type: Number,
-//     require: true,
-//   },
-//   endAt: {
-//     type: Number,
-//     require: true,
-//   },
-//   isCurrentPosition: {
-//     type: Boolean,
-//     default: true,
-//   },
-//   industry: {
-//     type: String,
-//     require: false,
-//     default: "",
-//   },
-//   description: {
-//     type: String,
-//     require: false,
-//     default: "",
-//   },
-// });
-// const education = new mongoose.Schema({
-//   education_id: mongoose.Schema.Types.ObjectId,
-//   ref: "education",
-// });
+const Helpers = require("../../plugins/Helpers");
+
 const userSchema = new mongoose.Schema(
   {
     firstName: {
@@ -92,14 +47,7 @@ const userSchema = new mongoose.Schema(
       required: false,
       default: "",
     },
-    
-    // position: {
-    //   type: [position],
-    // },
-    // education: {
-    //   type: [education],
-    // },
-    // location: {},
+
   },
   {
     timestamps: {
