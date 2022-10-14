@@ -1,0 +1,35 @@
+{
+  "name": "st-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Social-Travel-App/ST-api.git"
+  },
+  "keywords": [
+    "social",
+    "app"
+  ],
+  "author": "ST-team",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Social-Travel-App/ST-api/issues"
+  },
+  "homepage": "https://github.com/Social-Travel-App/ST-api#readme",
+  "dependencies": {
+    "body-parser": "^1.20.0",
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "joi": "^17.6.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.5.4",
+    "nodemon": "^2.0.20"
+  }
+}

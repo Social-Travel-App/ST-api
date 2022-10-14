@@ -1,0 +1,4 @@
+{
+    "400":"API-error",
+    "422":["email/username-existed"]
+}
