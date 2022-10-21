@@ -28,7 +28,7 @@ const sendConfirmationEmail = async (email, confirmation_code) => {
       accessToken: myAccessToken,
     },
   })
-  transport
+  await transport
     .sendMail({
       form: ADMIN_EMAIL_ADDRESS,
       to: email,

@@ -27,9 +27,13 @@ class AuthController {
       return user_model
         .save()
         .then((user) => {
-          res.status(200).send('Register Success ! Please check your email')
-          sendConfirmationEmail(user.email, user.confirmation_code)
+          if (user) {
+            sendConfirmationEmail(user.email, user.confirmation_code)
+          }
         })
+        .then(() =>
+          res.status(200).send('Register Success ! Please check your email')
+        )
         .catch(() => {
           throw new createError.Conflict('Email Exits')
         })
