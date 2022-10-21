@@ -1,0 +1,8 @@
+POST http://localhost:5000/api/v1/client/auth/register HTTP/1.1
+content-type: application/json
+
+{
+    "email":"hoangdinh2411@gmail.com",
+    "password":"hoang111",
+    "confirmPassword":"hoang111"
+}

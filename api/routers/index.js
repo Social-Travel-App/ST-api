@@ -1,3 +1,3 @@
 module.exports = function (app) {
-  app.use('/auth', require('./auth.router'))
+  app.use('/client', require('./client/auth.router'))
 }

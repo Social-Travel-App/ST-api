@@ -1,7 +1,8 @@
 const mongoose = require('mongoose')
 const crypto = require('crypto')
 const jwt = require('jsonwebtoken')
-const config = require('../utils/auth.config')
+const { emailRegex, passwordRegex } = require('../validations/constants')
+
 const userSchema = new mongoose.Schema(
   {
     full_name: {
@@ -9,40 +10,25 @@ const userSchema = new mongoose.Schema(
     },
     email: {
       type: String,
+      match: emailRegex,
       require: true,
       unique: true,
     },
     phone: {
       type: String,
     },
-    address: {
-      type: String,
-    },
     avatar: {
       type: String,
     },
-    role: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'role',
-      },
-    ],
-    accepted_policy: {
-      type: Boolean,
-      default: false,
+    role: {
+      type: String,
+      default: 'admin',
     },
     status: {
       type: String,
-      enum: ['pending', 'active'],
-      default: 'pending', // active - banned - deleted,
+      default: 'active', // active - banned - deleted,
     },
-    company_name: {
-      type: String,
-    },
-    business_number: {
-      type: String,
-      unique: true,
-    },
+
     salt: {
       type: String,
     },
@@ -51,10 +37,6 @@ const userSchema = new mongoose.Schema(
     },
     refresh_token: {
       type: String,
-    },
-    confirmation_code: {
-      type: String,
-      unique: true,
     },
   },
   {
@@ -76,6 +58,28 @@ userSchema.methods.validatePassword = function (password) {
     .pbkdf2Sync(password, this.salt, 10000, 512, 'sha512')
     .toString('hex')
   return this.hash === hash
+}
+
+userSchema.methods.generateRefreshToken = function () {
+  const payload = {
+    email: this.email,
+    role: this.role,
+    status: this.status,
+    id: this._id,
+  }
+  const options = {
+    expiresIn: '4h',
+  }
+  let access_token = jwt.sign(payload, process.env.JWT_ADMIN_SECRET, options)
+
+  let refresh_token = jwt.sign(payload, process.env.JWT_ADMIN_SECRET, {
+    expiresIn: '7d',
+  })
+
+  return {
+    refresh_token,
+    access_token,
+  }
 }
 
 userSchema.methods.jsonData = function () {
